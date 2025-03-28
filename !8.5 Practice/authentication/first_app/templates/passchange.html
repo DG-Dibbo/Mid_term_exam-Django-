@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+    <h5 style="text-align:center;margin-top:5px;">Change your password</h5>
+    <div class="container mt-5 d-flex align-item-center " style="width: 50%;margin:auto">
+
+      <form method="post" action="">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if form.errors %}
+          <div class="alert alert-danger mt-3">
+            <strong>Error!</strong> Please check correct old pass
+          </div>
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary mt-3">Change Password</button>
+      </form>
+    </div>
+{% endblock content %}
+
+
+
+
