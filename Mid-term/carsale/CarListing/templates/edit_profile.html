@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!-- Success/Error Messages -->
+
+<p><a href="{% url 'pass_change'%}">Change Your Password </a></p>
+<form method="post" action="" style="width: 50%;margin:auto;">
+    {% csrf_token %}
+    {{ form|crispy}}
+    {% if form.errors %}
+      <div class="alert alert-danger mt-3">
+        <strong>Error!</strong> Please check your input.
+      </div>
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary mt-3">Update</button>
+  </form>
+{% endblock content %}

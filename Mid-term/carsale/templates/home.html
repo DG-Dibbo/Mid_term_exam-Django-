@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<h1 class="text-center p-3">This is a Car Sales Website</h1>
+
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <p class="lead">
+                To find a car sales website, consider platforms like Car sales.com.au, CarGurus, Cinch, Cazoo, 
+                Facebook Marketplace, eBay, and Gumtree for used cars, or Buy a car for both used cars and financing. 
+            </p>
+        </div>
+        <div class="col-md-6 text-center">
+            <img src="{% static 'car.jpg' %}" alt="Car Sales" class="img-fluid rounded shadow-lg">
+        </div>
+    </div>
+</div>
+
+<!-- Car Brand Name -->
+
+<!-- Car Brand Name -->
+<div class="container mt-5">
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        {% for B in brand %}
+            <a class="btn px-4 py-2 text-white fw-bold shadow brand-btn" href="{% url 'brand_wise_slug' B.slug %}">
+                {{ B.name }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+    .brand-btn {
+        background-color: #007bff;
+        border: 2px solid transparent;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .brand-btn:hover {
+        background-color: #0056b3;
+        border-color: #ffffff;
+        transform: scale(1.05);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<!-- Car Listing Section -->
+<div class="container mt-5">
+    <h3 class="mb-3 text-primary">📝 {{ data|length }} Result(s) Found</h3>
+    <div class="row">
+        {% for car in data %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg">
+                {% if car.image %}
+                    <img class="card-img-top" src="{{ car.image.url }}" alt="{{ car.name }}">
+                {% else %}
+                    <img class="card-img-top" src="{% static 'default.jpg' %}" alt="No Image">
+                {% endif %}
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">{{ car.name }}</h5>
+                    <h6 class="text-muted">Brand: {{ car.brand.name }}</h6>
+                    <h4 class="text-success">৳ {{ car.price }}</h4>
+                    <p class="card-text">{{ car.description|truncatewords:15 }}</p>
+                    <p class="text-primary">Stock: {{ car.quantity }}</p>
+                    <a href="{% url 'read_car' car.id%}" class="btn btn-outline-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

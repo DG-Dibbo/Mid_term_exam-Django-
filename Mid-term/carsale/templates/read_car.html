@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Car Details Section -->
+<div class="container mt-5">
+    <div class="row">
+        <!-- Car Image Section -->
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-0">
+                    {% if read.image %}
+                        <img class="card-img-top rounded-4" src="{{ read.image.url }}" alt="{{ read.name }}" 
+                            style="object-fit: cover; height: 350px; width: 100%;">
+                    {% else %}
+                        <img class="card-img-top rounded-4" src="{% static 'default.jpg' %}" alt="No Image" 
+                            style="object-fit: cover; height: 350px; width: 100%;">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Car Details Section -->
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body text-center">
+                    <h3 class="card-title fw-bold text-dark">{{ read.name }}</h3>
+                    <h5 class="text-muted">Brand: <span class="fw-bold text-primary">{{ read.brand.name }}</span></h5>
+                    <h4 class="text-success fw-bold">৳ {{ read.price }}</h4>
+                    <p class="card-text text-muted">{{ read.description }}</p>
+                    
+                    {% if user.is_authenticated %}
+                        <h4 class="text-primary fw-bold">Stock: {{ read.quantity }}</h4>
+                        <a href="{% url 'buy_car' read.id %}" class="btn btn-lg btn-success fw-bold px-4">🛒 Buy Now</a>
+                    {% endif %}
+                    
+                    <br>
+                    <a href="{% url 'carsale' %}" class="btn btn-outline-dark mt-3">🔙 Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Comments Section -->
+<div class="card mt-5 shadow-lg border-0 rounded-4">
+    <div class="card-body">
+        <h3 class="text-primary text-center">💬 Total Comments: <span class="fw-bold">{{ comments | length }}</span></h3>
+        <hr>
+        
+        {% for comment in comments %}
+            <div class="p-3 mb-2 rounded bg-light shadow-sm">
+                <p class="fw-bold text-dark">🗣 {{ comment.name }} <span class="text-muted small">({{ comment.created_on|date:"d M, Y h:i A" }})</span></p>
+                <p class="text-muted">{{ comment.body }}</p>
+            </div>
+        {% empty %}
+            <p class="text-muted text-center">😕 No comments yet. Be the first to comment!</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Comment Form -->
+<div class="container mt-4">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body">
+            <h3 class="text-danger text-center">💬 Add a Comment</h3>
+            <form method="post" action="{% url 'comment_car' read.id %}" class="mt-3">
+                {% csrf_token %}
+                {{ comment_form|crispy }}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-warning btn-lg fw-bold">📩 Submit Comment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

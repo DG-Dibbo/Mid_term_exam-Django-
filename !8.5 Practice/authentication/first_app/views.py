@@ -91,18 +91,3 @@ def user_change_data(request):
         return render(request,'profile.html',{'form':form})
     else:
         return redirect('signup')
-
-# def user_change_data(request):
-#     if request.user.is_authenticated:
-#         if request.method == 'POST':
-#             form = forms.change_data(request.POST, instance=request.user)
-#             if form.is_valid():
-#                 form.save()
-#                 messages.success(request, '✅ Your account has been updated successfully!')
-#                 return redirect('profile')  # আপডেট হওয়ার পর profile পেজে পাঠাবে
-#         else:
-#             form = forms.change_data(instance=request.user)  # ✅ ফর্ম লোড করার সময় instance সেট করা হয়েছে
-
-#         return render(request, 'profile.html', {'form': form})  # ✅ profile.html এ ফর্ম পাঠানো হবে
-#     else:
-#         return redirect('signup')
